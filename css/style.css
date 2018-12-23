@@ -1,0 +1,89 @@
+html, body, #map{
+    height: 100%;
+    width: 100%;
+
+}
+
+/*@media only screen and (min-width: 500px) {*/
+/*.navbar {*/
+/*display: none;*/
+/*}*/
+/*}*/
+
+.navbar {
+    padding: 5px 15px;
+    min-height: 60px;
+    height: 60px;
+    position: relative;
+    z-index: 9999 !important;
+}
+
+.navbar-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-style: italic;
+}
+
+.button {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+.map-menu-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-style: italic;
+    padding-right: 10px;
+}
+
+.column {
+    font-family: 'Montserrat', sans-serif;
+    height: 100%;
+}
+
+.trip-planner {
+    height: calc(100% - 180px);
+}
+
+.map-menu{
+    display: flex;
+    margin-top: 5px;
+    /*justify-content: flex-end;*/
+}
+
+.dropdown{
+    padding-right: 5px;
+}
+
+#dropdown-menu{ /*using ID because it's bad to overwrite class of framework */
+    z-index: 999999999999;
+}
+
+.clear-filter {
+    font-family: Montserrat;
+    color: gray;
+
+}
+
+#trip-list {
+    margin-left: 10px;
+}
+
+.trip-list {
+    overflow-y: auto;
+    font-size: 14px;
+
+}
+
+.trip-name {
+    font-weight: 500;
+}
+
+.location-list-item-col {
+    border-bottom: 1px solid #d3d3d350;
+}
+
+
+/*.footer .columns {*/
+/*border: 1px solid black;*/
+/*}*/
