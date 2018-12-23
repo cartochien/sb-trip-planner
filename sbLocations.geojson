@@ -1,0 +1,17 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates":  [ -119.702032,34.424206 ]
+      },
+      "properties": {
+        "Name":"Santa Barbara Courthouse",
+        "Description":"It is a nice house",
+        "Image":"http://images.fzilla.com/thumbs/dog.jpg"
+      }
+    }
+  ]
+}

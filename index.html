@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="" width="device-width, initial-scale=1">
+    <title>Santa Barbara Trip Planner</title>
+
+    <!-- logo font -->
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700i" rel="stylesheet">
+
+    <!-- body font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,500i" rel="stylesheet">
+
+    <!-- leaflet.css -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
+          integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+          crossorigin=""/>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        $(function () {
+            $(".dropdown-trigger").click(function () {
+
+                if ($(this).parents(".dropdown").hasClass("is-active")) {
+                    $(this).parents(".dropdown").removeClass("is-active");
+                } else {
+
+                    $(".dropdown.is-active").removeClass("is-active");
+                    $(this).parents(".dropdown").addClass("is-active");
+                }
+
+
+            });
+            $("body").click(function (ev) {
+                if (!$(ev.target).parents(".dropdown").length) {
+                    $(".dropdown.is-active").removeClass("is-active");
+                }
+            });
+
+            $("#art").click(function (event) {
+                event.preventDefault();
+                currentJson.forEach(function(val,ind){
+                    if(val.Category !== "Arts & Culture") {
+                        map.removeLayer(markerMap[ind]);
+                    }
+                    else if(val.hidden = true) {
+                        map.addLayer(markerMap[ind]);
+                    }
+                })
+            });
+
+            $("#outdoor").click(function (event) {
+                event.preventDefault();
+                currentJson.forEach(function(val,ind){
+                    if(val.Category !== "Outdoor") {
+                        map.removeLayer(markerMap[ind]);
+                    }
+                    else if(val.hidden = true) {
+                        map.addLayer(markerMap[ind]);
+                    }
+                })
+            });
+
+            $("#spa").click(function (event) {
+                event.preventDefault();
+                currentJson.forEach(function(val,ind){
+                    if(val.Category !== "Spa") {
+                        map.removeLayer(markerMap[ind]);
+                    }
+                    else if(val.hidden = true) {
+                        map.addLayer(markerMap[ind]);
+                    }
+                })
+            });
+
+            $("#wine").click(function (event) {
+                event.preventDefault();
+                currentJson.forEach(function(val,ind){
+                    if(val.Category !== "Wine") {
+                        map.removeLayer(markerMap[ind]);
+                    }
+                    else if(val.hidden = true) {
+                        map.addLayer(markerMap[ind]);
+                    }
+                })
+            });
+
+            // $("#wine").click(function (event) {
+            //     event.preventDefault();
+            //     currentJson.forEach(function(val,ind){
+            //         if(val.Category !== "Wine" && !val.hidden) {
+            //             map.removeLayer(markerMap[ind]);
+            //             val.hidden = true
+            //         }
+            //         else {
+            //             map.addLayer(markerMap[ind]);
+            //         }
+            //     })
+            // });
+
+            $("#clear-activity-filter").click(function (event) {
+                event.preventDefault();
+                currentJson.forEach(function(val,ind){
+                    if(val.marker !== markerMap) {
+                        // map.removeLayer(markerMap[ind]);
+                        map.addLayer(markerMap[ind]);
+                    }
+                    // else if(val.hidden = true) {
+                    //     map.addLayer(markerMap[ind]);
+                    // }
+                })
+            });
+
+            $("#santabarbara").click(function (event) {
+                event.preventDefault();
+                currentJson.forEach(function(val,ind){
+                    if(val.City !== "Santa Barbara") {
+                        map.removeLayer(markerMap[ind]);
+                    }
+                    else if(val.hidden = true) {
+                        map.addLayer(markerMap[ind]);
+                    }
+                })
+            });
+
+            $("#goleta").click(function (event) {
+                event.preventDefault();
+                currentJson.forEach(function(val,ind){
+                    if(val.City !== "Goleta") {
+                        map.removeLayer(markerMap[ind]);
+                    }
+                    else if(val.hidden = true) {
+                        map.addLayer(markerMap[ind]);
+                    }
+                })
+            });
+
+            $("#montecito").click(function (event) {
+                event.preventDefault();
+                currentJson.forEach(function(val,ind){
+                    if(val.City !== "Montecito") {
+                        map.removeLayer(markerMap[ind]);
+                    }
+                    else if(val.hidden = true) {
+                        map.addLayer(markerMap[ind]);
+                    }
+                })
+            });
+
+            $("#county").click(function (event) {
+                event.preventDefault();
+                currentJson.forEach(function(val,ind){
+                    if(val.City !== "County") {
+                        map.removeLayer(markerMap[ind]);
+                    }
+                    else if(val.hidden = true) {
+                        map.addLayer(markerMap[ind]);
+                    }
+                })
+            });
+
+            $("#clear-city-filter").click(function (event) {
+                event.preventDefault();
+                currentJson.forEach(function(val,ind){
+                    if(val.marker !== markerMap) {
+                        // map.removeLayer(markerMap[ind]);
+                        map.addLayer(markerMap[ind]);
+                    }
+                    // else if(val.hidden = true) {
+                    //     map.addLayer(markerMap[ind]);
+                    // }
+                })
+            });
+
+
+
+        });
+
+
+
+    </script>
+
+    <!-- leaflet.js -->
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
+            integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+            crossorigin=""></script>
+
+    <!-- bulma framework -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css">
+
+    <!-- style.css-->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!-- navbar -->
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        Santa Barbara
+    </div>
+    <div class="navbar-end">
+        <div class="map-menu">
+            <div class="map-menu-text">
+                Filter by:
+            </div>
+
+            <div class="dropdown">
+                <div class="dropdown-trigger">
+                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                        <span>Attractions</span>
+                        <span class="icon is-small">
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </span>
+                    </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                        <a href="#" id="clear-activity-filter" class="dropdown-item clear-filter">
+                            clear filters
+                        </a>
+                        <a href="#" id="art" class="dropdown-item">
+                            Arts & Culture
+                        </a>
+                        <a href="#" id="outdoor" class="dropdown-item">
+                            Outdoor Recreation
+                        </a>
+                        <a href="#" id="spa" class="dropdown-item">
+                            Spa & Wellness
+                        </a>
+                        <a href="#" id="wine" class="dropdown-item">
+                            Wine
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="dropdown-trigger">
+                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                        <span>Cities</span>
+                        <span class="icon is-small">
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </span>
+                    </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                        <a href="#" id="clear-city-filter" class="dropdown-item clear-filter">
+                            clear filters
+                        </a>
+                        <a href="#" id="goleta" class="dropdown-item">
+                            Goleta
+                        </a>
+                        <a href="#" id="montecito" class="dropdown-item">
+                            Montecito
+                        </a>
+                        <a href="#" id="santabarbara" class="dropdown-item">
+                            Santa Barbara
+                        </a>
+                        <a href="#" id="county" class="dropdown-item">
+                            County
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--<a class="button is-danger">Plan Your Trip</a>-->
+        </div>
+    </div>
+</nav>
+
+<!-- list of travel spots, map -->
+<div class="trip-planner columns">
+    <div class="trip-list column is-one-fifths">
+        <ul id="trip-list">
+
+        </ul>
+    </div>
+
+    <div class="column is-four-fifths">
+        <div id="map">
+        </div>
+        <script>
+            // initialize the map
+            // initialize the map
+            var map = L.map('map', {zoomControl: false, attributionControl: false}).setView([34.44, -119.93], 10.5);
+            new L.Control.Zoom({position: 'topright'}).addTo(map);
+
+            // load a tile layer
+            L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png').addTo(map);
+
+            //.openPopup()
+
+
+            var currentJson = [
+                {
+                    "Latitude": 34.423076,
+                    "Longitude": -119.704334,
+                    "Name": "Armada Wine & Beer Merchant",
+                    "Category": "Wine",
+                    "Description": "Tucked away wine bar offering the best wine from around the globe",
+                    "City": "Santa Barbara",
+                    "Image": "https://media-cdn.tripadvisor.com/media/photo-s/06/57/53/0f/armada-wine-beer-merchant.jpg"
+                },
+                {
+                    "Latitude": 34.402889,
+                    "Longitude": -119.743303,
+                    "Name": "Arroyo Burro Beach",
+                    "Category": "Outdoor",
+                    "Description": "Popular location amongst locals with a reputation as a \"dog beach\"",
+                    "City": "Santa Barbara",
+                    "Image": "https://www.californiabeaches.com/wp-content/uploads/2014/09/IMG_0637-Large-2-e1497304955482-1000x654.jpg"
+                },
+                {
+                    "Latitude": 34.4388816,
+                    "Longitude": -119.706452,
+                    "Name": "Belmond El Encanto",
+                    "Category": "Spa",
+                    "Description": "Santa Barbara's only 5-star resort with sweeping views of Santa Barbara and the Pacific Ocean",
+                    "City": "Santa Barbara",
+                    "Image": "https://belmondcdn.azureedge.net/assets/photos/ele/2580x1299/ele-ext-aerial02_2580x1299.jpg"
+                },
+                {
+                    "Latitude": 34.4174022,
+                    "Longitude": -119.6520625,
+                    "Name": "Butterfly Beach",
+                    "Category": "Outdoor",
+                    "Description": "Stunningly simple and beautiful beach in ritzy Montecito",
+                    "City": "Montecito",
+                    "Image": "https://www.californiabeaches.com/wp-content/uploads/2014/09/Butterfly-Beach-Montecito-BryceFeb2016-2-997x700.jpg"
+                },
+                {
+                    "Latitude": 34.4062751,
+                    "Longitude": -119.8456848,
+                    "Name": "Campus Point",
+                    "Category": "Outdoor",
+                    "Description": "UCSB's most iconic spot known for its surf and also features The Reef, an interactive aquarium facility",
+                    "City": "Goleta",
+                    "Image": "http://www.news.ucsb.edu/sites/www.news.ucsb.edu/files/styles/article_horizontal/public/images/2015/Campus%20Point%20copy.jpg?itok=72tCrqUw"
+                },
+                {
+                    "Latitude": 34.422555,
+                    "Longitude": -119.687575,
+                    "Name": "Carr Winery",
+                    "Category": "Wine",
+                    "Description": "Carr Winery is a small Santa Barbara winery dedicated to creating handcrafted wines",
+                    "City": "Santa Barbara",
+                    "Image": "https://santabarbaravenues.com/wp-content/uploads/2016/10/CarrWinery_TastingBar-1170x738.jpg"
+                },
+                {
+                    "Latitude": 34.415375,
+                    "Longitude": -119.682801,
+                    "Name": "Chase Palm Park",
+                    "Category": "Outdoor",
+                    "Description": "Waterfront park with tall palm trees, lounging lawns, and bike paths",
+                    "City": "Santa Barbara",
+                    "Image": "https://static1.squarespace.com/static/5581d2d3e4b02b620931f85b/5582204ce4b0ec57cc5dddb3/5582204ce4b0ec57cc5de554/1472961474308/ChasePalmPark_SB.jpg"
+                },
+                {
+                    "Latitude": 34.460614,
+                    "Longitude": -120.026204,
+                    "Name": "El Capitan State Beach",
+                    "Category": "Outdoor",
+                    "Description": "State Beach with tide pools and 131 campground sites",
+                    "City": "County",
+                    "Image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/El_Capit%C3%A1n_State_Beach_beachview.jpg/1200px-El_Capit%C3%A1n_State_Beach_beachview.jpg"
+                },
+                {
+                    "Latitude": 34.411426,
+                    "Longitude": -119.736924,
+                    "Name": "Elings Park",
+                    "Category": "Outdoor",
+                    "Description": "A 230-acre park with sports fields, hiking and biking trails, playgrounds, and wedding venues",
+                    "City": "Santa Barbara",
+                    "Image": "http://www.elingspark.org/wp-content/uploads/2015/05/sports-field.jpg"
+                },
+                {
+                    "Latitude": 34.4209162,
+                    "Longitude": -119.702003,
+                    "Name": "FLOAT Luxury Spa",
+                    "Category": "Spa",
+                    "Description": "Light and airy spa with sky room and private garden",
+                    "City": "Santa Barbara",
+                    "Image": "http://www.youglowgal.com/wp-content/uploads/2017/08/Float-Luxury-Spa-in-Santa-Barbara-Garden.jpg"
+                },
+                {
+                    "Latitude": 34.4174541,
+                    "Longitude": -119.6441576,
+                    "Name": "Four Seasons Resort The Biltmore Santa Barbara",
+                    "Category": "Spa",
+                    "Description": "Oceanfront resort along Butterfly Beach with graceful archways and a luxurious spa",
+                    "City": "Montecito",
+                    "Image": "https://t-ec.bstatic.com/images/hotel/max1280x900/731/73103986.jpg"
+                },
+                {
+                    "Latitude": 34.415814,
+                    "Longitude": -119.688592,
+                    "Name": "Fox Wine Co.",
+                    "Category": "Wine",
+                    "Description": "Fox Wine Co. is a label dedicated to producing limited quantity wines that represent the diversity of Santa Barbara County",
+                    "City": "Santa Barbara",
+                    "Image": "https://s3-media1.fl.yelpcdn.com/bphoto/dYFk3AZdklePJ5hXWvS52g/o.jpg"
+                },
+                {
+                    "Latitude": 34.477246,
+                    "Longitude": -120.229799,
+                    "Name": "Gaviota State Park",
+                    "Category": "Outdoor",
+                    "Description": "State Park and beach campground with trails for hiking, horseback riding, and mountain biking",
+                    "City": "County",
+                    "Image": "https://www.californiabeaches.com/wp-content/uploads/2014/09/Gaviota-State-Beach-Bryce-Feb2016-9-e1516408161127-1000x598.jpg"
+                },
+                {
+                    "Latitude": 34.4168342,
+                    "Longitude": -119.8343986,
+                    "Name": "Goleta Beach",
+                    "Category": "Outdoor",
+                    "Description": "Day-use park located near UCSB with volleyball courts and horseshoe pits ",
+                    "City": "Goleta",
+                    "Image": "https://www.countyofsb.org/uploadedImages/parks/Content/Day_Use_Parks/GoletaBeach.jpg"
+                },
+                {
+                    "Latitude": 34.4167626,
+                    "Longitude": -119.6787416,
+                    "Name": "Hilton Santa Barbara Beachfront Hotel",
+                    "Category": "Spa",
+                    "Description": "Sun-drenched resort located only two miles from downtown perfect for a vacation getaway",
+                    "City": "Santa Barbara",
+                    "Image": "https://www.californiabeaches.com/wp-content/uploads/2015/08/DT_rotundaspace01_45_677x380_FitToBoxSmallDimension_Center.jpg"
+                },
+                {
+                    "Latitude": 34.4024925,
+                    "Longitude": -119.7014209,
+                    "Name": "Leadbetter Beach",
+                    "Category": "Outdoor",
+                    "Description": "Popular beach known for its ideal kite and windsurfing conditions",
+                    "City": "Santa Barbara",
+                    "Image": "http://www.travelgrom.com/wp-content/uploads/leadbetter-beach-santa-barbara-hdr.jpg"
+                },
+                {
+                    "Latitude": 34.4420528,
+                    "Longitude": -119.6611306,
+                    "Name": "Lotusland",
+                    "Category": "Outdoor",
+                    "Description": "Non-profit botanical garden located on the historic estate of Madame Ganna Walska",
+                    "City": "Montecito",
+                    "Image": "http://www.lotusland.org/wp-content/uploads/2013/10/Torii-Gate3035F-Web.jpg"
+                },
+                {
+                    "Latitude": 34.43808,
+                    "Longitude": -119.71363,
+                    "Name": "Mission Santa Barbara",
+                    "Category": "Arts & Culture",
+                    "Description": "The chief cultural and historical landmark of Santa Barbara, best known as the \"Queen of the Missions\"",
+                    "City": "Santa Barbara",
+                    "Image": "http://www.santabarbaramission.org/wp-content/uploads/2016/01/banner3.jpg"
+                },
+                {
+                    "Latitude": 34.413517,
+                    "Longitude": -119.691698,
+                    "Name": "MOXI, The Wolf Museum of Exploration + Innovation",
+                    "Category": "Arts & Culture",
+                    "Description": "Contemporary museum devoted to science, technology, and art and known for its interactive exhibits",
+                    "City": "Santa Barbara",
+                    "Image": "https://nightout.s3.amazonaws.com/media/posters/28891/large-814dd85265b778fe.png?1481357326"
+                },
+                {
+                    "Latitude": 34.413892,
+                    "Longitude": -119.688636,
+                    "Name": "Municipal Winemakers",
+                    "Category": "Wine",
+                    "Description": "Inspired by the tastes of the old world and invested in the new, Municipal Winemakers infuses the best of both worlds",
+                    "City": "Santa Barbara",
+                    "Image": "https://santabarbaraca.com/content/uploads/2017/10/original_cararobbins_muniwine_021-2-_cafdfa68-5056-a348-3a4360e36fa04d9a.jpg"
+                },
+                {
+                    "Latitude": 34.421234,
+                    "Longitude": -119.690665,
+                    "Name": "Potek Winery",
+                    "Category": "Wine",
+                    "Description": "Local winery where visitors can experience the winemaking process and taste the best of what Santa Barbara County has to offer",
+                    "City": "Santa Barbara",
+                    "Image": "http://wanderandwine.com/wp-content/uploads/2015/12/FullSizeRender-1024x768.jpg"
+                },
+                {
+                    "Latitude": 34.464359,
+                    "Longitude": -120.066588,
+                    "Name": "Refugio State Beach",
+                    "Category": "Outdoor",
+                    "Description": "State Beach great for coastal fishing, kayak tours, and picnics",
+                    "City": "County",
+                    "Image": "https://i.pinimg.com/originals/5f/16/46/5f164635ae4cee60894885dcfedf2851.jpg"
+                },
+                {
+                    "Latitude": 34.414826,
+                    "Longitude": -119.690696,
+                    "Name": "Riverbench Winery",
+                    "Category": "Wine",
+                    "Description": "Tasting room located in the funk zone offering Santa Maria Valley Pinot Noir, Chardonnay, and Sparkling Wine",
+                    "City": "Santa Barbara",
+                    "Image": "http://www.mysimplifiedlife.net/wp-content/uploads/2016/05/riverbench-winery-funkzone-01.jpg"
+                },
+                {
+                    "Latitude": 34.423096,
+                    "Longitude": -119.703389,
+                    "Name": "Sanford Winery and Vineyards",
+                    "Category": "Wine",
+                    "Description": "Tasting room specializing in handcrafted, estate-bottled Pinot Noir and Chardonnay",
+                    "City": "Santa Barbara",
+                    "Image": "http://www.sanfordwinery.com/sites/default/files/image_pageblock/sanford-winery-uo4a8868-72dpi-_0.jpg"
+                },
+                {
+                    "Latitude": 34.456776,
+                    "Longitude": -119.709849,
+                    "Name": "Santa Barbara Botanic Garden",
+                    "Category": "Outdoor",
+                    "Description": "A 78-acre botanical garden containing over 1,000 rare and indigenous plants ",
+                    "City": "Santa Barbara",
+                    "Image": "https://publicgardens.org/sites/default/files/styles/1000x400_garden_image/public/images/Garden/Santa%20Barbara%20Botanic%20Garden.JPG?itok=T_2ogPSu"
+                },
+                {
+                    "Latitude": 34.432708,
+                    "Longitude": -119.69385,
+                    "Name": "Santa Barbara Bowl",
+                    "Category": "Arts & Culture",
+                    "Description": "A 4,562 seat amphitheater with live performances running from April to October",
+                    "City": "Santa Barbara",
+                    "Image": "https://www.greatvaluecolleges.net/wp-content/uploads/2014/08/Santa-barbara-bowl.png"
+                },
+                {
+                    "Latitude": 34.424091,
+                    "Longitude": -119.702107,
+                    "Name": "Santa Barbara Courthouse",
+                    "Category": "Arts & Culture",
+                    "Description": "A National Historic Landmark known for its beautiful architecture and sweeping views of Santa Barbara",
+                    "City": "Santa Barbara",
+                    "Image": "http://images.fzilla.com/thumbs/sunkengarden2bricepapervigcetrspotnormalweb21mfq.jpg"
+                },
+                {
+                    "Latitude": 34.42165,
+                    "Longitude": -119.697059,
+                    "Name": "Santa Barbara Historical Museum",
+                    "Category": "Arts & Culture",
+                    "Description": "Historical museum dedicated to the preservation and celebration of Santa Barbara's local history ",
+                    "City": "Santa Barbara",
+                    "Image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Historical_Adobe_Santa_Barbara.jpg/1200px-Historical_Adobe_Santa_Barbara.jpg"
+                },
+                {
+                    "Latitude": 34.423577,
+                    "Longitude": -119.703905,
+                    "Name": "Santa Barbara Museum of Art",
+                    "Category": "Arts & Culture",
+                    "Description": "One of the leading art museums on the West Coast with particular strengths in Asian, American, and European art",
+                    "City": "Santa Barbara",
+                    "Image": "https://www.sbma.net/sites/default/files/image/front.jpg"
+                },
+                {
+                    "Latitude": 34.441016,
+                    "Longitude": -119.714465,
+                    "Name": "Santa Barbara Museum of Natural History",
+                    "Category": "Arts & Culture",
+                    "Description": "Renowned museum known for its exhibit halls focusing on regional natural history",
+                    "City": "Santa Barbara",
+                    "Image": "https://www.noozhawk.com/images/uploads/1-21616-Santa-Barbara-Museum-of-Natural-History-2.jpg"
+                },
+                {
+                    "Latitude": 34.41053,
+                    "Longitude": -119.685767,
+                    "Name": "Santa Barbara Museum of Natural History Sea Center",
+                    "Category": "Arts & Culture",
+                    "Description": "Museum located on Stearn's Wharf dedicated to marine life and conservation in the Santa Barbara Channel",
+                    "City": "Santa Barbara",
+                    "Image": "https://santabarbaravenues.com/wp-content/uploads/2016/10/SeaCenter_WillaKveta_Overview-1170x738.jpg"
+                },
+                {
+                    "Latitude": 34.414428,
+                    "Longitude": -119.690705,
+                    "Name": "Santa Barbara Wine Collective",
+                    "Category": "Wine",
+                    "Description": "Tasting room located in the funk zone dedicated to offerring the best of Santa Barbara wine country",
+                    "City": "Santa Barbara",
+                    "Image": "http://www.santabarbarawinecollective.com/wp-content/uploads/2015/06/Feinblatt_20150102_33090_WEB_ONLY-1.jpg"
+                },
+                {
+                    "Latitude": 34.4132867,
+                    "Longitude": -119.6895204,
+                    "Name": "Skater's Point",
+                    "Category": "Outdoor",
+                    "Description": "14,600 squarefoot outdoor skatepark located along the waterfront",
+                    "City": "Santa Barbara",
+                    "Image": "https://i.pinimg.com/originals/da/21/5a/da215a6146745ba42cc61943ec9d386a.jpg"
+                },
+                {
+                    "Latitude": 34.424707,
+                    "Longitude": -119.706564,
+                    "Name": "The Arlington Theatre",
+                    "Category": "Arts & Culture",
+                    "Description": "Historic theater showcasing films, stand-up comedy, and big-name bands",
+                    "City": "Santa Barbara",
+                    "Image": "https://pmcvariety.files.wordpress.com/2017/01/santa-barbara-film-festival-arlington-theater-2.jpg?w=1000&h=563&crop=1"
+                },
+                {
+                    "Latitude": 34.424093,
+                    "Longitude": -119.704669,
+                    "Name": "The Granada Theatre",
+                    "Category": "Arts & Culture",
+                    "Description": "Local landmark and historic theater offering the best in live music and theater",
+                    "City": "Santa Barbara",
+                    "Image": "http://eaw.com/wp-content/uploads/2014/02/Granada-Theatre.png"
+                },
+                {
+                    "Latitude": 34.4341071,
+                    "Longitude": -119.9222762,
+                    "Name": "The Ritz-Carlton Bacara, Santa Barbara",
+                    "Category": "Spa",
+                    "Description": "Beautiful Mediterrenean resort along the coast of Goleta with 42,000 squarefoot spa and fitness facility",
+                    "City": "Goleta",
+                    "Image": "http://www.visitcalifornia.com/sites/default/files/styles/welcome_image/public/VC_BacaraResportSpa_Supplied_Bacara-Resort-Pool-Sunset_1280x640_downsized.jpg"
+                },
+                {
+                    "Latitude": 34.419594,
+                    "Longitude": -119.696327,
+                    "Name": "Villa Wine Bar and Kitchen",
+                    "Category": "Wine",
+                    "Description": "Villa Wine Bar is a wine bar dedicated to local wine and European beer",
+                    "City": "Santa Barbara",
+                    "Image": "https://s3.amazonaws.com/siteninja/multitenant/images/59765/images/original/villawinebar_02.jpg?1463790833"
+                },
+                {
+                    "Latitude": 34.423672,
+                    "Longitude": -119.707071,
+                    "Name": "Wine + Beer",
+                    "Category": "Wine",
+                    "Description": "Wine + Beer is a wine bar located in the Santa Barbara Public Market offering the best in fine wine and craft beers",
+                    "City": "Santa Barbara",
+                    "Image": "http://wanderandwine.com/wp-content/uploads/2014/05/IMG_3572-1024x682.jpg"
+                }
+            ];
+
+            /**/
+            // $(function(){
+            console.clear();
+            console.log("ASD");
+
+            var markerMap = {};
+
+            currentJson.forEach(function (val, index) {
+
+                console.log([val.Latitude, val.Longitude]);
+                console.log(L, map);
+                var marker = L.marker([val.Latitude, val.Longitude]).addTo(map).bindPopup("<img width='100' src='" + val.Image + "'><h3>" + val.Name + "</h3><p>");
+                markerMap[index] = marker;
+                val.marker = index;
+                $("#trip-list").append('<li data-item-id="' + index + '"><img width="150" src="' + val.Image + '"><h3><div class="trip-name">' + val.Name + '</div></h3><p>' + val.Description + '</p><hr></li>');
+//.openPopup()
+            });
+            // });
+            $("#trip-list").on("click", "li", function (e) {
+                markerMap[$(this).attr("data-item-id")].openPopup();
+            });
+            $()
+        </script>
+    </div>
+</div>
+
+<div class="map-footer columns">
+
+    <div class="card">
+        <div class="card-content">
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image is-96x96">
+                        <img src="http://images.fzilla.com/images/santabarbaracityrealestate500.jpg"
+                             alt="Placeholder image">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <a href="https://santabarbaraca.com/explore-and-discover-santa-barbara/history-of-santa-barbara/">About
+                        Santa Barbara</a>
+                    <div>Learn about what makes this piece of the California coast so unique</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image is-96x96">
+                        <img src="http://images.fzilla.com/images/singlewinebasketcarrpinotnoir945631509722596jp.jpg"
+                             alt="Placeholder image">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <a href="https://santabarbaraca.com/itinerary/santa-barbara-gift-guide/">Gift Guide</a>
+                    <div>Find the right gifts for your loved ones from local artisans</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image is-96x96">
+                        <img src="http://images.fzilla.com/images/santabarbaracourthouseelopement51ppw500h500.jpg"
+                             alt="Placeholder image">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <a href="https://santabarbaraca.com/weddings/">Wedding Planning</a>
+                    <div>Make the most of your special day in the American Riviera</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image is-96x96">
+                        <img src="http://images.fzilla.com/images/6625e5a96bcc63fc362b8b1576224b60.jpg"
+                             alt="Placeholder image">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <a href="https://santabarbaraca.com/itinerary/santa-barbara-bubble-trail/">Wine Guide</a>
+                    <div>Enjoy the best of Santa Barbara Wine Country</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>-->
+<!--<script>-->
+<!--// Initialize Firebase-->
+<!--var config = {-->
+<!--apiKey: "AIzaSyABDYheuUl3mDIPF6P14SdqKkQk4BA1Glo",-->
+<!--authDomain: "santa-barbara-map.firebaseapp.com",-->
+<!--databaseURL: "https://santa-barbara-map.firebaseio.com",-->
+<!--projectId: "santa-barbara-map",-->
+<!--storageBucket: "santa-barbara-map.appspot.com",-->
+<!--messagingSenderId: "745797307210"-->
+<!--};-->
+<!--firebase.initializeApp(config);-->
+
+<!--var db = firebase.firestore();-->
+<!--var storageRef = firebase.storage().ref();-->
+
+<!--db.collection("maps").add({markers:currentJson}).then(function(doc) {-->
+<!--console.log(doc, "added!");-->
+<!--}).catch(function(error) {-->
+<!--console.error("Error adding document: ", error);-->
+<!--});-->
+<!--</script>-->
+
+</body>
+</html>
